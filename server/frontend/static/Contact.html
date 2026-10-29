@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactez-nous - Concessionnaire Auto</title>
+    
+    <!-- Liens vers les feuilles de style (comme demandé) -->
+    <!-- On suppose que bootstrap.min.css et style.css sont dans le même dossier static -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Un peu de CSS personnalisé pour styliser les informations de contact -->
+    <style>
+        .contact-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .contact-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            width: 45%;
+            margin-bottom: 20px;
+            border-left: 5px solid #007bff;
+        }
+        .info-card h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .info-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+        /* Style responsive pour les petits écrans */
+        @media (max-width: 600px) {
+            .info-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barre de navigation d'en-tête -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">AutoCapstone</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Home.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="About.html">À propos</a>
+                    </li>
+                    <!-- Lien actif comme demandé -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="Contact.html">Contactez-nous <span class="sr-only">(actuel)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu des informations de contact -->
+    <div class="container">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h1>Contactez-nous</h1>
+                <p>Notre équipe est à votre disposition pour toute question ou demande d'information.</p>
+            </div>
+
+            <div class="contact-info">
+                <div class="info-card">
+                    <h3>📍 Notre Adresse</h3>
+                    <p>
+                        1234 Avenue des Champs-Élysées<br>
+                        75008 Paris, France<br>
+                        (Siège social)
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>📞 Téléphone</h3>
+                    <p>
+                        Service Commercial : +33 1 23 45 67 89<br>
+                        Service Après-Vente : +33 1 98 76 54 32<br>
+                        Du Lundi au Vendredi : 9h00 - 18h00
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>✉️ Email</h3>
+                    <p>
+                        Informations : contact@autocapstone.fr<br>
+                        Support : support@autocapstone.fr
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>🕒 Horaires d'ouverture</h3>
+                    <p>
+                        Lundi - Vendredi : 09:00 - 19:00<br>
+                        Samedi : 10:00 - 17:00<br>
+                        Dimanche et jours fériés : Fermé
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
