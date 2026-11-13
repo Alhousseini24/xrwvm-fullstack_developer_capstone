@@ -1,25 +1,62 @@
-# Uncomment the following imports before adding the Model code
-
-# from django.db import models
-# from django.utils.timezone import now
-# from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils.timezone import now
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-# Create your models here.
+class CarMake(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
 
-# <HINT> Create a Car Make model `class CarMake(models.Model)`:
-# - Name
-# - Description
-# - Any other fields you would like to include in car make model
-# - __str__ method to print a car make object
+    def __str__(self):
+        return self.name
 
 
-# <HINT> Create a Car Model model `class CarModel(models.Model):`:
-# - Many-To-One relationship to Car Make model (One Car Make has many
-# Car Models, using ForeignKey field)
-# - Name
-# - Type (CharField with a choices argument to provide limited choices
-# such as Sedan, SUV, WAGON, etc.)
-# - Year (IntegerField) with min value 2015 and max value 2023
-# - Any other fields you would like to include in car model
-# - __str__ method to print a car make object
+class CarModel(models.Model):
+    CAR_TYPES = [
+        ('SEDAN', 'Sedan'),
+        ('SUV', 'SUV'),
+        ('WAGON', 'Wagon'),
+        ('COUPE', 'Coupe'),
+        ('HATCHBACK', 'Hatchback'),
+        ('TRUCK', 'Truck'),
+    ]
+    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20, choices=CAR_TYPES, default='SEDAN')
+    year = models.IntegerField(
+        default=2023,
+        validators=[MaxValueValidator(2023), MinValueValidator(2015)],
+    )
+
+    def __str__(self):
+        return f"{self.car_make.name} {self.name} ({self.year})"
+
+
+class Dealer(models.Model):
+    full_name = models.CharField(max_length=200)
+    short_name = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=50)
+    st = models.CharField(max_length=10)
+    address = models.CharField(max_length=200)
+    zip = models.CharField(max_length=10)
+    lat = models.FloatField(default=0.0)
+    long = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.full_name} ({self.city}, {self.state})"
+
+
+class Review(models.Model):
+    dealership = models.ForeignKey(Dealer, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    review = models.TextField()
+    purchase = models.BooleanField(default=False)
+    purchase_date = models.DateField(default=now)
+    car_make = models.CharField(max_length=100, blank=True)
+    car_model = models.CharField(max_length=100, blank=True)
+    car_year = models.CharField(max_length=10, blank=True)
+    sentiment = models.CharField(max_length=20, default='neutral')
+
+    def __str__(self):
+        return f"Review by {self.name} for {self.dealership.full_name}"
