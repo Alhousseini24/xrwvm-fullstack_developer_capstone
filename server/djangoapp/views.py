@@ -1,3 +1,4 @@
+from .restapis import get_request, analyze_review_sentiments, post_review
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
@@ -49,42 +50,44 @@ def registration(request):
     else:
         return JsonResponse({"userName": username, "error": "Already Registered"}, status=400)
 
-def get_dealerships(request, state=None):
-    if state is None:
-        dealerships = Dealer.objects.all()
+def get_dealerships(request, state="All"):
+    if(state == "All"):
+        endpoint = "/fetchDealers"
     else:
-        dealerships = Dealer.objects.filter(state__iexact=state)
-    dealership_list = [{"id": d.id, "city": d.city, "state": d.state, "st": d.st, "address": d.address, "zip": d.zip, "lat": d.lat, "long": d.long, "short_name": d.short_name, "full_name": d.full_name} for d in dealerships]
-    return JsonResponse({"status": 200, "dealers": dealership_list})
-
-def get_dealer_reviews(request, dealer_id):
-    if dealer_id:
-        reviews = Review.objects.filter(dealership_id=dealer_id)
-        review_list = [{"id": r.id, "name": r.name, "dealership": r.dealership_id, "review": r.review, "purchase": r.purchase, "purchase_date": r.purchase_date, "car_make": r.car_make, "car_model": r.car_model, "car_year": r.car_year, "sentiment": r.sentiment} for r in reviews]
-        return JsonResponse({"status": 200, "reviews": review_list})
-    return JsonResponse({"status": 400, "message": "Bad Request"})
+        endpoint = "/fetchDealers/"+state
+    dealerships = get_request(endpoint)
+    return JsonResponse({"status":200,"dealers":dealerships})
 
 def get_dealer_details(request, dealer_id):
-    if dealer_id:
-        dealer = get_object_or_404(Dealer, pk=dealer_id)
-        reviews = Review.objects.filter(dealership_id=dealer_id)
-        review_list = [{"id": r.id, "name": r.name, "review": r.review, "purchase": r.purchase, "purchase_date": r.purchase_date, "car_make": r.car_make, "car_model": r.car_model, "car_year": r.car_year, "sentiment": r.sentiment} for r in reviews]
-        dealer_data = {"id": dealer.id, "full_name": dealer.full_name, "city": dealer.city, "state": dealer.state, "address": dealer.address, "zip": dealer.zip}
-        return JsonResponse({"status": 200, "dealer": dealer_data, "reviews": review_list})
-    return JsonResponse({"status": 400, "message": "Bad Request"})
+    if(dealer_id):
+        endpoint = "/fetchDealer/"+str(dealer_id)
+        dealership = get_request(endpoint)
+        return JsonResponse({"status":200,"dealer":dealership})
+    else:
+        return JsonResponse({"status":400,"message":"Bad Request"})
 
-@csrf_exempt
+def get_dealer_reviews(request, dealer_id):
+    if(dealer_id):
+        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
+        reviews = get_request(endpoint)
+        for review_detail in reviews:
+            response = analyze_review_sentiments(review_detail['review'])
+            print(response)
+            review_detail['sentiment'] = response['sentiment']
+        return JsonResponse({"status":200,"reviews":reviews})
+    else:
+        return JsonResponse({"status":400,"message":"Bad Request"})
+
 def add_review(request):
-    if request.method == "POST":
+    if(request.user.is_anonymous == False):
         data = json.loads(request.body)
         try:
-            review = Review(dealership_id=data["dealership"], name=data.get("name", ""), review=data["review"], purchase=data.get("purchase", False), purchase_date=data.get("purchase_date") or None, car_make=data.get("car_make", ""), car_model=data.get("car_model", ""), car_year=data.get("car_year", ""), sentiment="neutral")
-            review.save()
-            return JsonResponse({"status": 200, "message": "Review added successfully"})
-        except Exception as e:
-            logger.error(f"Error adding review: {e}")
-            return JsonResponse({"status": 500, "message": "Error adding review"})
-    return JsonResponse({"status": 405, "message": "Method Not Allowed"})
+            response = post_review(data)
+            return JsonResponse({"status":200})
+        except:
+            return JsonResponse({"status":401,"message":"Error in posting review"})
+    else:
+        return JsonResponse({"status":403,"message":"Unauthorized"})
 
 def get_cars(request):
     count = CarMake.objects.filter().count()
