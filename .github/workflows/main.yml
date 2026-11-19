@@ -10,9 +10,7 @@ jobs:
   lint_python:
     name: Lint Python Files
     runs-on: ubuntu-latest
-
     steps:
-
     - name: Checkout Repository
       uses: actions/checkout@v3
     
@@ -38,7 +36,6 @@ jobs:
   lint_js:
       name: Lint JavaScript Files
       runs-on: ubuntu-latest
-
       steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
