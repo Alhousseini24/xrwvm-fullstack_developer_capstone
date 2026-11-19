@@ -29,7 +29,7 @@ SECRET_KEY =\
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost', 
+    'localhost',
     '127.0.0.1',
     'alhousseinid-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai'
 ]

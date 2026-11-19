@@ -1,7 +1,5 @@
-cat > djangoapp/views.py << 'ENDOFFILE'
 import json
 import logging
-from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -40,13 +38,13 @@ def registration(request):
     first_name = data.get('firstName', '')
     last_name = data.get('lastName', '')
     email = data.get('email', '')
-    
+
     username_exist = User.objects.filter(username=username).exists()
     email_exist = User.objects.filter(email=email).exists()
-    
+
     if not username_exist and not email_exist:
         user = User.objects.create_user(
-            username=username, first_name=first_name, 
+            username=username, first_name=first_name,
             last_name=last_name, password=password, email=email
         )
         login(request, user)
@@ -108,4 +106,3 @@ def get_cars(request):
     for car_model in car_models:
         cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
-ENDOFFILE
