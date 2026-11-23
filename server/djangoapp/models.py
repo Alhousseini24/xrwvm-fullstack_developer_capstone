@@ -1,4 +1,3 @@
-cat > djangoapp/models.py << 'ENDOFFILE'
 from django.db import models
 from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -61,5 +60,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.name} for {self.dealership.full_name}"
-
-ENDOFFILE
