@@ -1,0 +1,2 @@
+$ curl -X POST https://alhousseinid-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/djangoapp/login -H "Content-Type: application/json" -d '{"userName": "root", "password": "********"}' -c cookies.txt
+{"userName": "root", "status": "Authenticated"}

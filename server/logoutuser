@@ -1,4 +1,2 @@
-$ curl -X GET https://alhousseinid-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/djangoapp/logout
-Error occurred while trying to proxy: http://172.17.7.203:8888/ 
-
-Please ensure your application is running and set to the correct port.
+$ curl -X GET https://alhousseinid-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/djangoapp/logout -b cookies.txt
+{"userName": ""}

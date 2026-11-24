@@ -1,0 +1,2 @@
+$ curl -X GET https://alhousseinid-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/djangoapp/dealer/3
+{"status": 200, "dealer": {"_id": "6b056e817f03f15ffef50572", "id": 3, "city": "Birmingham", "state": "Alabama", "address": "9477 Twin Pines Center", "zip": "35285", "lat": "33.5446", "long": "-86.9292", "short_name": "Sub-Ex", "full_name": "Sub-Ex Car Dealership", "__v": 0}}

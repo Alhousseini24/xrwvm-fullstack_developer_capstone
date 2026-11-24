@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -26,7 +26,9 @@ jobs:
 
     - name: Run Linter
       run: |
-        echo "Vérification du code Python ignorée pour cette soumission."
+        pwd
+        # Run flake8 on all Python files (config in server/setup.cfg)
+        flake8 --config server/setup.cfg --exclude '*/migrations/*,*/djangoenv/*,*/venv/*' .
         echo "Linted all the python files successfully"
 
   lint_js:
@@ -41,7 +43,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install JSHint
+        run: npm install jshint --global
+
       - name: Run Linter
         run: |
-          echo "Vérification du code JavaScript ignorée pour cette soumission."
+          # Run JSHint on all JavaScript files in the database directory
+          find ./server/database -name "*.js" -not -path "*/node_modules/*" -exec jshint {} +
           echo "Linted all the js files successfully"
